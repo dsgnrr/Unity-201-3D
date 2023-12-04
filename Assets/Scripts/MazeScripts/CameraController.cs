@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject cameraAnchor;
+
     private float camAngleX;
     private float camAngleY;
     private float rodAngleX;
@@ -26,7 +29,10 @@ public class CameraController : MonoBehaviour
         camAngleY += mx;
         rodAngleX -= my;
         rodAngleY += mx;
-
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            MazeState.cameraFirstPerson = !MazeState.cameraFirstPerson;
+        }
         //// Обмеження горизонтального кута
         //camAngleX = Mathf.Clamp(camAngleX, 20f, 90f);
         //rodAngleX = Mathf.Clamp(rodAngleX, 20f, 90f);
@@ -34,6 +40,13 @@ public class CameraController : MonoBehaviour
     private void LateUpdate()
     {
         this.transform.eulerAngles = new Vector3(camAngleX, camAngleY, 0);
-        transform.position = Quaternion.Euler(rodAngleX, rodAngleY, 0) * camRod;
+        if (MazeState.cameraFirstPerson)
+        {
+            transform.position = cameraAnchor.transform.position;
+        }
+        else
+        {
+            transform.position = Quaternion.Euler(rodAngleX, rodAngleY, 0) * camRod;
+        }
     }
 }
