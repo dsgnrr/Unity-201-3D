@@ -31,6 +31,38 @@ public class LightScript : MonoBehaviour
         {
             isDay = !isDay;
         }
+        if(Input.GetKeyUp(KeyCode.KeypadMinus)) 
+        {
+            float intensity = lightComponent.intensity;
+            float newIntensity = intensity - 0.01f;
+            if (intensity >0.01f)
+            {
+                intensity = newIntensity;
+                RenderSettings.skybox.SetFloat("_Exposure", newIntensity);
+            }
+            lightComponent.intensity = intensity;  
+        }
+        if (Input.GetKeyUp(KeyCode.KeypadPlus))
+        {
+            float intensity = lightComponent.intensity;
+            float newIntensity = intensity + 0.01f;
+            if (intensity < 1f)
+            {
+                intensity = newIntensity;
+                RenderSettings.skybox.SetFloat("_Exposure", newIntensity);
+            }
+            lightComponent.intensity = intensity;
+        }
+        if (lightComponent.intensity < 0.01f)
+        {
+            lightComponent.intensity = 0.01f;
+            RenderSettings.skybox.SetFloat("_Exposure", 0.01f);
+        }
+        if (lightComponent.intensity > 1f)
+        {
+            lightComponent.intensity = 1f;
+            RenderSettings.skybox.SetFloat("_Exposure", 1f);
+        }
     }
     private void SetDayLighting()
     {

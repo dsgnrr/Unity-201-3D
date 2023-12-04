@@ -1,5 +1,9 @@
 # Unity-201-3D Homeworks
 
+## Homework 6 04.12
+* speed 2x <br/>
+![alt](https://github.com/dsgnrr/Unity-201-3D/blob/main/Homework/hw6/result.png)
+
 ## Homework 5 01.12
 ![alt](https://github.com/dsgnrr/Unity-201-3D/blob/main/Homework/hw5/result.png)
 
