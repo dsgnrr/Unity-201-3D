@@ -19,4 +19,8 @@ public class SphereScript : MonoBehaviour
         Vector3 forceDirection = new Vector3(kh, 0, kv);
         body.AddForce(forceFactor * Time.deltaTime * forceDirection);
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("SphereScript: " + other.name);
+    }
 }
