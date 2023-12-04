@@ -25,8 +25,12 @@ public class SphereScript : MonoBehaviour
         forward.y = 0;
         forward = forward.normalized;
 
+
         Vector3 forceDirection = //new Vector3(kh, 0, kv); - World space
             kh * right + kv * forward;
+
+        forceDirection=forceDirection.normalized;
+
         body.AddForce(forceFactor * Time.deltaTime * forceDirection);
     }
     private void OnTriggerEnter(Collider other)
