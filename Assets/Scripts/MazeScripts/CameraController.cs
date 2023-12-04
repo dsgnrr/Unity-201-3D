@@ -27,9 +27,9 @@ public class CameraController : MonoBehaviour
         rodAngleX -= my;
         rodAngleY += mx;
 
-        // Обмеження горизонтального кута
-        camAngleX = Mathf.Clamp(camAngleX, 20f, 90f);
-        rodAngleX = Mathf.Clamp(rodAngleX, 20f, 90f);
+        //// Обмеження горизонтального кута
+        //camAngleX = Mathf.Clamp(camAngleX, 20f, 90f);
+        //rodAngleX = Mathf.Clamp(rodAngleX, 20f, 90f);
     }
     private void LateUpdate()
     {
