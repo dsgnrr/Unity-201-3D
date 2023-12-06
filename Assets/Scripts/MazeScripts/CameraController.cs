@@ -22,6 +22,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        if (MazeState.isPause) return;
         float mx = Input.GetAxis("Mouse X");
         float my = Input.GetAxis("Mouse Y");
 
@@ -39,6 +40,8 @@ public class CameraController : MonoBehaviour
     }
     private void LateUpdate()
     {
+        if (MazeState.isPause) return;
+
         this.transform.eulerAngles = new Vector3(camAngleX, camAngleY, 0);
         if (MazeState.cameraFirstPerson)
         {

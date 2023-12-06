@@ -27,6 +27,8 @@ public class LightScript : MonoBehaviour
 
     void Update()
     {
+        if (MazeState.isPause) return;
+
         if (Input.GetKeyUp(KeyCode.N))
         {
             isDay = !isDay;

@@ -15,6 +15,7 @@ public class SpotLightScript : MonoBehaviour
 
     void Update()
     {
+        if (MazeState.isPause) return;
         if (MazeState.cameraFirstPerson && !MazeState.isDay) 
         {
             this.transform.position = _camera.transform.position;
