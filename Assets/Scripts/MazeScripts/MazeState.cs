@@ -23,6 +23,7 @@ public class MazeState : MonoBehaviour
     public static bool cameraFirstPerson { get; set; }
     public static bool isDay { get; set; }
     public static bool isPause { get; set; }
+    public static int score { get; set; }
 
    
     public static float effectsVolume;
