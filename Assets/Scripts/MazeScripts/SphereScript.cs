@@ -29,9 +29,10 @@ public class SphereScript : MonoBehaviour
         isMuted = MazeState.isSoundsMuted;
         if (!MazeState.isSoundsMuted)
         {
-            backgroundMusic.volume = MazeState.musicVolume;
+            //backgroundMusic.volume = MazeState.musicVolume;
             backgroundMusic.Play();
         }
+        MazeState.AddNotifyListener(OnMazeStateChanged);
     }
 
     void Update()
@@ -52,22 +53,21 @@ public class SphereScript : MonoBehaviour
 
         body.AddForce(forceFactor * Time.deltaTime * forceDirection);
         cameraAnchor.transform.position = this.transform.position - anchorOffset;
-        if (MazeState.isSoundsMuted != isMuted)
+        /*if (MazeState.isSoundsMuted != isMuted)
         {
             isMuted = MazeState.isSoundsMuted;
             backgroundMusic.mute = isMuted;
             collectSound.mute = isMuted;
-        }
-        if (backgroundMusic.volume != MazeState.musicVolume&&!MazeState.isSoundsMuted)
+        }*/
+        /*if (backgroundMusic.volume != MazeState.musicVolume&&!MazeState.isSoundsMuted)
         {
             backgroundMusic.Pause();
             backgroundMusic.volume = MazeState.musicVolume;
             backgroundMusic.Play();
-        }
-        if (collectSound.volume != MazeState.effectsVolume && !MazeState.isSoundsMuted)
+        }*/       /*if (collectSound.volume != MazeState.effectsVolume && !MazeState.isSoundsMuted)
         {
             collectSound.volume = MazeState.musicVolume;
-        }
+        }*/
     }
 
     private void OnTriggerEnter(Collider other)
@@ -80,6 +80,18 @@ public class SphereScript : MonoBehaviour
                 collectSound.volume = MazeState.effectsVolume;
                 collectSound.Play();
             }
+        }
+    }
+
+    private void OnMazeStateChanged(string propertyName)
+    {
+        if (propertyName == nameof(MazeState.musicVolume))
+        {
+            Debug.Log("OnMazeStateChanged: " + propertyName);
+            //if (backgroundMusic.volume != MazeState.musicVolume && !MazeState.isSoundsMuted)
+            //{
+            //    backgroundMusic.volume = MazeState.musicVolume;
+            //}
         }
     }
 }
