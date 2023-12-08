@@ -83,6 +83,11 @@ public class SphereScript : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        MazeState.RemoveNotifyListener(OnMazeStateChanged);
+    }
+
     private void OnMazeStateChanged(string propertyName)
     {
         if (propertyName == nameof(MazeState.musicVolume))
