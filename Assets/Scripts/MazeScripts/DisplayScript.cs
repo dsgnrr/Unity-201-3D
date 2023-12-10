@@ -10,14 +10,21 @@ public class DisplayScript : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI score;
     [SerializeField]
+    private TMPro.TextMeshProUGUI level;
+    [SerializeField]
     private Image image1; // for checkpoint1 indicator
+    [SerializeField]
+    private Image image2; // for checkpoint2 indicator
 
     private float gameTime;
     void Start()
     {
-        MazeState.AddPropertyListener(nameof(MazeState.checkPoint1Amount),OnMazeStateChanged);
+        MazeState.AddPropertyListener(nameof(MazeState.checkPoint1Amount),OnCheckpoint1AmountChanged);
+        MazeState.AddPropertyListener(nameof(MazeState.checkPoint2Amount),OnCheckpoint2AmountChanged);
+        MazeState.AddPropertyListener(nameof(MazeState.gameLevel),OnGameLevelChanged);
         gameTime = 0f;
         MazeState.score = 100;
+        MazeState.gameLevel = 1;
         score.text = $"Score: {MazeState.score}";
     }
     void Update()
@@ -38,12 +45,22 @@ public class DisplayScript : MonoBehaviour
             score.text = $"Score: {MazeState.score}";
         }
     } 
-    private void OnMazeStateChanged()
+    private void OnCheckpoint1AmountChanged()
     {
        image1.fillAmount = MazeState.checkPoint1Amount; 
     }
+    private void OnCheckpoint2AmountChanged()
+    {
+        image2.fillAmount = MazeState.checkPoint2Amount;
+    }
+    private void OnGameLevelChanged()
+    {
+        level.text = $"Level: {MazeState.gameLevel}";
+    }
     private void OnDestroy()
     {
-        MazeState.RemovePropertyListener(nameof(MazeState.checkPoint1Amount), OnMazeStateChanged);
+        MazeState.RemovePropertyListener(nameof(MazeState.checkPoint1Amount), OnCheckpoint1AmountChanged);
+        MazeState.RemovePropertyListener(nameof(MazeState.checkPoint2Amount), OnCheckpoint2AmountChanged);
+        MazeState.RemovePropertyListener(nameof(MazeState.gameLevel), OnGameLevelChanged);
     }
 }

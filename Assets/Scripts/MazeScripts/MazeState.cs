@@ -10,6 +10,9 @@ public class MazeState : MonoBehaviour
     private static Dictionary<String, List<Action>> propertyObservers = new()
     {
         {nameof(checkPoint1Amount),new() },
+        {nameof(checkPoint2Amount),new() },
+        {nameof(checkPoint2Active),new() },
+        {nameof(gameLevel),new() },
         {nameof(musicVolume),new() }
     };
 
@@ -54,7 +57,7 @@ public class MazeState : MonoBehaviour
         }*/
     }
 
-    public static float _checkPoint1Amount { get; set; }
+    private static float _checkPoint1Amount { get; set; }
     public static float checkPoint1Amount 
     { 
         get { return _checkPoint1Amount; }
@@ -74,7 +77,44 @@ public class MazeState : MonoBehaviour
             NotifyListeners(); }
     }
 
+    private static float _checkPoint2Amount { get; set; }
+    public static float checkPoint2Amount
+    {
+        get { return _checkPoint2Amount; }
+        set
+        {
+            if (_checkPoint2Amount != value)
+            {
+                _checkPoint2Amount = value;
+                NotifyListeners();
+            }
+        }
+    }
+    public static bool _checkPoint2Active;
+    public static bool checkPoint2Active
+    {
+        get
+        {
+            return _checkPoint2Active;
+        }
+        set
+        {
+            _checkPoint2Active = value;
+            NotifyListeners();
+        }
+    }
+    private static int _gameLevel;
+    public static int gameLevel
+    {
+        get{ return _gameLevel; }
+        set
+        {
+            _gameLevel = value;
+            NotifyListeners();
+        }
+    }
     public static bool checkPoint1Passed { get; set; }
+    public static bool checkPoint2Passed { get; set; }
     public static bool cameraFirstPerson { get; set; }
     public static bool isDay { get; set; }
     public static bool isPause { get; set; }
