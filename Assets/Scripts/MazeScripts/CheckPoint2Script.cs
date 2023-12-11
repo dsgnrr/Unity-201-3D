@@ -38,8 +38,11 @@ public class CheckPoint2Script : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("CheckPoint1Script: " + other.name);
-        MazeState.checkPoint2Passed = true;
-        GameObject.Destroy(this.gameObject);
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("CheckPoint1Script: " + other.name);
+            MazeState.checkPoint2Passed = true;
+            GameObject.Destroy(this.gameObject);
+        }
     }
 }

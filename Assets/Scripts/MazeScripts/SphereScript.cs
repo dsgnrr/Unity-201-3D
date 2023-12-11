@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SphereScript : MonoBehaviour
 {
-    [SerializeField]
+    //[SerializeField]
     private GameObject _camera;
     [SerializeField]
     private GameObject cameraAnchor;
@@ -15,9 +15,28 @@ public class SphereScript : MonoBehaviour
 
     private AudioSource collectSound;
     private AudioSource backgroundMusic;
-    private bool isMuted;
+
+    private SphereScript instance = null;
+
     void Start()
     {
+        if (instance != null)
+        {
+            /* Цей код викликається якщо
+             * спавниться новий ГО, у новій сцені, але є збережений
+             * об'єкт (instance) перенесений з попередньої сцени
+             * Треба перенести з нього потрібні характеристики та 
+             * видалити його , перейшовши на работу з
+             */
+            this.transform.position += new Vector3(0, instance.transform.position.y, 0);
+            GameObject.Destroy(instance.gameObject);
+        }
+        instance = this;
+        DontDestroyOnLoad(this.gameObject);
+        _camera = Camera.main.gameObject;
+
+        Debug.Log("SphereScript::Start");
+
         body = GetComponent<Rigidbody>();
         anchorOffset = this.transform.position -
             cameraAnchor.transform.position;
@@ -26,7 +45,6 @@ public class SphereScript : MonoBehaviour
         collectSound = audioSources[0];
         backgroundMusic = audioSources[1];
         backgroundMusic.ignoreListenerVolume = false;
-        isMuted = MazeState.isSoundsMuted;
         if (!MazeState.isSoundsMuted)
         {
             //backgroundMusic.volume = MazeState.musicVolume;
@@ -100,3 +118,20 @@ public class SphereScript : MonoBehaviour
         }
     }
 }
+/*
+ * - Статичний контекст (наприклад, MazeState) існує між сценами
+ *      Дані, записані скриптами однієї сцени, залишаються доступними для
+ *      іншої.
+ *      Динамічні об'єкти руйнуються при переході між сценами.
+ * - DontDestroyOnLoad запобігає руйнуванню об'єкту (GameObject) у т.ч.
+ *      його внутрішнього складу. Зберігаються усі характеристики об'єкту - 
+ *      позиція, повороти, фізичні показники (швидкість руху, обертання, участь у гравітації) тощо.
+ *      Але усі зв'язки, утворені зі руйнованою
+ *      сценою, при переході на іншу спричиняють
+ *      MissingReferenceException: The object has been destroyed
+ *      Оскільки Start при переході збереженого об'єкту не повторюється,
+ *      відновити зв'язки ускладнено.
+ * - Як варіат, на кожній сцені створити свій "клон" персонажа,
+ *      а при старті сцени, коли виникає два об'єкти (новий та збережений),
+ *      приймається рішення про залишок одного з них.
+ */

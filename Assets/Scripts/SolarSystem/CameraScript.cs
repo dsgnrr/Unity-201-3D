@@ -21,6 +21,10 @@ public class CameraScript : MonoBehaviour
         camSun = sun.transform.position - this.transform.position;
         _camera = this.GetComponent<Camera>();
     }
+    private void Awake()
+    {
+        Debug.Log("Awake: "+MazeState.checkPoint1Amount);
+    }
 
     // Update is called once per frame
     void Update()

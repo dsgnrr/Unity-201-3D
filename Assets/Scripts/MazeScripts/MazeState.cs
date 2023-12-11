@@ -7,15 +7,24 @@ using UnityEngine;
 public class MazeState : MonoBehaviour
 {
     private static List<Action<String>> observers = new();
-    private static Dictionary<String, List<Action>> propertyObservers = new()
-    {
+    private static Dictionary<String, List<Action>> propertyObservers = initPropertyObservers();
+    /*{
         {nameof(checkPoint1Amount),new() },
         {nameof(checkPoint2Amount),new() },
         {nameof(checkPoint2Active),new() },
+        {nameof(checkPoint2Passed),new() },
         {nameof(gameLevel),new() },
         {nameof(musicVolume),new() }
-    };
-
+    };*/
+    private static Dictionary<String, List<Action>> initPropertyObservers()
+    {
+        Dictionary<String, List<Action>> res = new();
+        foreach(var prop in typeof(MazeState).GetProperties())
+        {
+            res[prop.Name] = new();
+        }
+        return res;
+    }
     public static void AddPropertyListener(String propertyName, Action listener)
     {
         if (propertyObservers.ContainsKey(propertyName))
@@ -77,6 +86,39 @@ public class MazeState : MonoBehaviour
             NotifyListeners(); }
     }
 
+    
+    private static int _gameLevel;
+    public static int gameLevel
+    {
+        get{ return _gameLevel; }
+        set
+        {
+            if (_gameLevel != value)
+            {
+                _gameLevel = value;
+                NotifyListeners();
+            }
+        }
+    }
+
+
+    #region checkpoint2
+    private static bool _checkPoint2Passed;
+    public static bool checkPoint2Passed
+    {
+        get
+        {
+            return _checkPoint2Passed;
+        }
+        set
+        {
+            if (_checkPoint2Passed != value)
+            {
+                _checkPoint2Passed = value;
+                NotifyListeners();
+            }
+        }
+    }
     private static float _checkPoint2Amount { get; set; }
     public static float checkPoint2Amount
     {
@@ -99,22 +141,15 @@ public class MazeState : MonoBehaviour
         }
         set
         {
-            _checkPoint2Active = value;
-            NotifyListeners();
+            if (_checkPoint2Active != value)
+            {
+                _checkPoint2Active = value;
+                NotifyListeners();
+            }
         }
     }
-    private static int _gameLevel;
-    public static int gameLevel
-    {
-        get{ return _gameLevel; }
-        set
-        {
-            _gameLevel = value;
-            NotifyListeners();
-        }
-    }
+    #endregion
     public static bool checkPoint1Passed { get; set; }
-    public static bool checkPoint2Passed { get; set; }
     public static bool cameraFirstPerson { get; set; }
     public static bool isDay { get; set; }
     public static bool isPause { get; set; }
