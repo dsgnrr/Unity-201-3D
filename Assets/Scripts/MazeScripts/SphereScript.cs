@@ -16,7 +16,7 @@ public class SphereScript : MonoBehaviour
     private AudioSource collectSound;
     private AudioSource backgroundMusic;
 
-    private SphereScript instance = null;
+    private static SphereScript instance = null;
 
     void Start()
     {
@@ -26,15 +26,17 @@ public class SphereScript : MonoBehaviour
              * спавниться новий ГО, у новій сцені, але є збережений
              * об'єкт (instance) перенесений з попередньої сцени
              * Треба перенести з нього потрібні характеристики та 
-             * видалити його , перейшовши на работу з
+             * видалити його , перейшовши на работу з "місцевим" ГО
              */
-            this.transform.position += new Vector3(0, instance.transform.position.y, 0);
+            this.transform.position +=
+                new Vector3(0, instance.transform.position.y, 0);
+
             GameObject.Destroy(instance.gameObject);
         }
         instance = this;
         DontDestroyOnLoad(this.gameObject);
-        _camera = Camera.main.gameObject;
 
+        _camera = Camera.main.gameObject;
         Debug.Log("SphereScript::Start");
 
         body = GetComponent<Rigidbody>();
