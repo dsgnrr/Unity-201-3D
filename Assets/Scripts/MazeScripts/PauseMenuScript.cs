@@ -17,11 +17,33 @@ public class PauseMenuScript : MonoBehaviour
     private GameObject content;
     [SerializeField]
     private AudioMixer soundMixer;
+    [SerializeField]
+    private TMPro.TMP_Dropdown qualityDropdown;
 
     void Start()
     {
+        string[] names = QualitySettings.names;
+        //for(int i = 0; i < names.Length; i++)
+        //{
+        //    Debug.Log(names[i]);
+        //}
+        if (names.Length != qualityDropdown.options.Count)
+        {
+            // кількість налаштувань у меню не збігається з системною
+            qualityDropdown.options.Clear();
+            for (int i = 0; i < names.Length; i++)
+            {
+                qualityDropdown.options.Add(new TMPro.TMP_Dropdown.OptionData(names[i]));
+            }
+            qualityDropdown.value = QualitySettings.GetQualityLevel();
+        }
+        else
+        {
+            OnQualityDropdownChanged(qualityDropdown.value);
+        }
         OnMusicVolumeChanged(musicVolumeSlider.value);
         OnEffectsVolumeChanged(effectsVolumeSlider.value);
+        
         MazeState.isSoundsMuted = muteAllToggle.isOn;
         if (content.activeInHierarchy)
         {
@@ -118,5 +140,10 @@ public class PauseMenuScript : MonoBehaviour
                 Debug.LogError($"Undefined button click detected: value = '{value}'");
                 break;
         }
+    }
+    public void OnQualityDropdownChanged(int value)
+    {
+        Debug.Log(value);
+        QualitySettings.SetQualityLevel(value, true);
     }
 }
